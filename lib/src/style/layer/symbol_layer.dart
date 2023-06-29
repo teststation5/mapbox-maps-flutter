@@ -64,6 +64,7 @@ class SymbolLayer extends Layer {
     this.textOpacity,
     this.textTranslate,
     this.textTranslateAnchor,
+    this.textField
   }) : super(
             id: id, visibility: visibility, maxZoom: maxZoom, minZoom: minZoom);
 
@@ -237,6 +238,8 @@ class SymbolLayer extends Layer {
 
   /// Controls the frame of reference for `text-translate`.
   TextTranslateAnchor? textTranslateAnchor;
+
+  String? textField;
 
   @override
   String _encode() {
@@ -421,6 +424,10 @@ class SymbolLayer extends Layer {
       paint["text-translate-anchor"] =
           textTranslateAnchor?.toString().split('.').last.toLowerCase();
     }
+    if (textField != null) {
+      paint["text-field"] = ['get',textField];
+    }
+
     var properties = {
       "id": id,
       "source": sourceId,
@@ -662,6 +669,7 @@ class SymbolLayer extends Layer {
               .last
               .toLowerCase()
               .contains(map["paint"]["text-translate-anchor"])),
+      textField: map["paint"]["text-field"] == null ? null : map["paint"]["text-field"][1],
     );
   }
 }
